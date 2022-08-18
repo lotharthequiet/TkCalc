@@ -81,11 +81,11 @@ class TkCalc():
                 case "+":
                     operation = 1
                 case "-":
-                    operation = 1
+                    operation = 2
                 case "x":
-                    operation = 1
+                    operation = 3
                 case "/":
-                    operation = 1
+                    operation = 4
                 case ".":
                     operation = 5
 
@@ -96,9 +96,10 @@ class TkCalc():
                     GlobalVars.calcmem = int(str(GlobalVars.calcmem) + str(value))
                     
             if operation == 5:
-                if not GlobalVars.calcmem:
+                print(GlobalVars.calcmem)
+                if GlobalVars.calcmem == None:
                     GlobalVars.calcmem = 0
-                    GlobalVars.calcmem = int(str(GlobalVars.calcmem) + str(value))
+                    GlobalVars.calcmem = float(str(GlobalVars.calcmem) + str(value))
                 else:
                     GlobalVars.calcmem = float(str(GlobalVars.calcmem) + str(value))
         except Exception as e:
@@ -115,7 +116,15 @@ class TkCalc():
     button7 = partial(docalc, 7)
     button8 = partial(docalc, 8)
     button9 = partial(docalc, 9)
-    
+    buttonplus = partial(docalc, "+")
+    buttonminus = partial(docalc, "-")
+    buttonmult = partial(docalc, "*")
+    buttondiv = partial(docalc, "/")
+    buttonper = partial(docalc, "%")
+    buttonsqrt = partial(docalc, "sqrt")
+    buttonplusmin = partial(docalc, "+/-")
+    buttoneq = partial(docalc, "=")
+    buttonperiod = partial(docalc, ".")
 
     root = tk.Tk()
     root.title(GlobalVars.appname)
@@ -137,9 +146,9 @@ class TkCalc():
     btn8.grid(column=1, row=2, padx=GlobalVars.pad, pady=GlobalVars.pad)
     btn9 = tk.Button(root, text="9", width=GlobalVars.btnsz, command=button9)
     btn9.grid(column=2, row=2, padx=GlobalVars.pad, pady=GlobalVars.pad)
-    percbtn = tk.Button(root, text="%", width=GlobalVars.btnsz, command=percent)
+    percbtn = tk.Button(root, text="%", width=GlobalVars.btnsz, command=buttonper)
     percbtn.grid(column=3, row=2, padx=GlobalVars.pad, pady=GlobalVars.pad)
-    sqrtbtn = tk.Button(root, text="SqRt", width=GlobalVars.btnsz, command=sqrt)
+    sqrtbtn = tk.Button(root, text="SqRt", width=GlobalVars.btnsz, command=buttonsqrt)
     sqrtbtn.grid(column=4, row=2, padx=GlobalVars.pad, pady=GlobalVars.pad)
 
     btn4 = tk.Button(root, text="4", width=GlobalVars.btnsz, command=button4)
@@ -148,9 +157,9 @@ class TkCalc():
     btn5.grid(column=1, row=3, padx=GlobalVars.pad, pady=GlobalVars.pad)
     btn6 = tk.Button(root, text="6", width=GlobalVars.btnsz, command=button6)
     btn6.grid(column=2, row=3, padx=GlobalVars.pad, pady=GlobalVars.pad)
-    multbtn = tk.Button(root, text="X", width=GlobalVars.btnsz, command=mult)
+    multbtn = tk.Button(root, text="X", width=GlobalVars.btnsz, command=buttonmult)
     multbtn.grid(column=3, row=3, padx=GlobalVars.pad, pady=GlobalVars.pad)
-    divbtn = tk.Button(root, text="/", width=GlobalVars.btnsz, command=div)
+    divbtn = tk.Button(root, text="/", width=GlobalVars.btnsz, command=buttondiv)
     divbtn.grid(column=4, row=3, padx=GlobalVars.pad, pady=GlobalVars.pad)
 
     btn1 = tk.Button(root, text="1", width=GlobalVars.btnsz, command=button1)
@@ -159,18 +168,18 @@ class TkCalc():
     btn2.grid(column=1, row=4, padx=GlobalVars.pad, pady=GlobalVars.pad)
     btn3 = tk.Button(root, text="3", width=GlobalVars.btnsz, command=button3)
     btn3.grid(column=2, row=4, padx=GlobalVars.pad, pady=GlobalVars.pad)
-    minbtn = tk.Button(root, text="-", width=GlobalVars.btnsz, command=minus)
+    minbtn = tk.Button(root, text="-", width=GlobalVars.btnsz, command=buttonminus)
     minbtn.grid(column=3, row=4, padx=GlobalVars.pad, pady=GlobalVars.pad)
-    eqbtn = tk.Button(root, text="=", width=GlobalVars.btnsz, command=equal, height=3)
+    eqbtn = tk.Button(root, text="=", width=GlobalVars.btnsz, command=buttoneq, height=3)
     eqbtn.grid(column=4, row=4, padx=GlobalVars.pad, pady=GlobalVars.pad, rowspan=2)
 
     btn0 = tk.Button(root, text="0", width=GlobalVars.btnsz, command=button0)
     btn0.grid(column=0, row=5, padx=GlobalVars.pad, pady=GlobalVars.pad)
-    perbtn = tk.Button(root, text=".", width=GlobalVars.btnsz, command=period)
+    perbtn = tk.Button(root, text=".", width=GlobalVars.btnsz, command=buttonperiod)
     perbtn.grid(column=1, row=5, padx=GlobalVars.pad, pady=GlobalVars.pad)
-    plusminbtn = tk.Button(root, text="+/-", width=GlobalVars.btnsz, command=plusminus)
+    plusminbtn = tk.Button(root, text="+/-", width=GlobalVars.btnsz, command=buttonplusmin)
     plusminbtn.grid(column=2, row=5, padx=GlobalVars.pad, pady=GlobalVars.pad)
-    plusbtn = tk.Button(root, text="+", width=GlobalVars.btnsz, command=plus)
+    plusbtn = tk.Button(root, text="+", width=GlobalVars.btnsz, command=buttonplus)
     plusbtn.grid(column=3, row=5, padx=GlobalVars.pad, pady=GlobalVars.pad)
     root.mainloop()
 
