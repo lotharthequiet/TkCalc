@@ -53,15 +53,6 @@ class TkCalc():
             print("Operator memory cleared.")
         except Exception as e:
             print("Error clearing memory.")
-
-    def seven(number=7):
-        print(number)
-        if GlobalVars.calcmem == None:
-            GlobalVars.calcmem = number
-        else:
-            print(GlobalVars.calcmem)
-        print(GlobalVars.calcmem)
-        #usrentrylbl.insert(0, number)
     
     def percent(operator="%"):
         print(operator)
