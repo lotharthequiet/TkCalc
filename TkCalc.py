@@ -53,43 +53,6 @@ class TkCalc():
             print("Operator memory cleared.")
         except Exception as e:
             print("Error clearing memory.")
-    
-    def percent(operator="%"):
-        print(operator)
-        GlobalVars.opmem = "%"
-    
-    def sqrt(operator="sqrt"):
-        print(operator)
-        GlobalVars.opmem = "sqrt"
-
-    def mult(operator="x"):
-        print(operator)
-        GlobalVars.opmem = "x"
-
-    def div(operator="/"):
-        print(operator)
-        GlobalVars.opmem = "/"
-
-    def minus(operator="-"):
-        print(operator)
-        GlobalVars.opmem = "-"
-
-    def equal(operator="="):
-        print(operator)
-        GlobalVars.opmem = "="
-        print(GlobalVars.calcmem)
-
-    def period(operator="."):
-        print(operator)
-        GlobalVars.opmem = "."
-
-    def plusminus(operator="+/-"):
-        print(operator)
-        GlobalVars.opmem = "+/-"
-
-    def plus(operator="+"):
-        print(operator)
-        GlobalVars.opmem = "+"
 
     def docalc(value):
         print("DoCalc function.")
