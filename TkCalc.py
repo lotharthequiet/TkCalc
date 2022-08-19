@@ -18,14 +18,11 @@ ERROR: More serious prob preventing app from running
 CRITICAL: Serious error
 """
 
-from ast import Global
 import tkinter as tk
-from typing_extensions import Self
-import tksheet
 import logging
 
 from functools import partial
-from tkinter import Tk, ttk, Canvas
+from tkinter import ttk, Canvas
 from PIL import Image, ImageTk
 
 tkclogger = logging.getLogger(__name__) 
