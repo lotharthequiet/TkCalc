@@ -27,16 +27,6 @@ from PIL import Image, ImageTk
 
 root = tk.Tk()
 
-class tkc():
-    loggr = logging.getLogger(__name__) 
-    loggr.setLevel(logging.DEBUG)
-    loggrfmt = logging.Formatter('%(asctime)s:%(levelname)s:%(message)s')
-    loggrstrm = logging.StreamHandler()
-    loggrstrm.setFormatter(loggrfmt)
-    loggr.addHandler(loggrstrm)
-    loggr.debug("Starting LST...")
-
-
 class GlobalVars():
     shortname = "TkCalc"
     ver = "0.1a1" 
@@ -52,6 +42,14 @@ class GlobalVars():
     git = "https://github.com/lotharthequiet/TkCalc.git"
     display = tk.StringVar()
     display.set = 0
+
+class tkc():
+    loggr = logging.getLogger(__name__) 
+    loggr.setLevel(logging.DEBUG)
+    loggrfmt = logging.Formatter('%(asctime)s:%(levelname)s:%(message)s')
+    loggrstrm = logging.StreamHandler()
+    loggrstrm.setFormatter(loggrfmt)
+    loggr.addHandler(loggrstrm)
 
 class TkCalc():
     GlobalVars.display.set = 0
