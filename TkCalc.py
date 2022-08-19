@@ -25,14 +25,17 @@ from functools import partial
 from tkinter import ttk, Canvas
 from PIL import Image, ImageTk
 
-tkclogger = logging.getLogger(__name__) 
-tkclogger.setLevel(logging.DEBUG)
-tkcloggerfmt = logging.Formatter('%(asctime)s:%(levelname)s:%(message)s')
-tkcloggerstrm = logging.StreamHandler()
-tkcloggerstrm.setFormatter(tkcloggerfmt)
-tkclogger.addHandler(tkcloggerstrm)
-tkclogger.debug("Starting LST...")
 root = tk.Tk()
+
+class tkc():
+    loggr = logging.getLogger(__name__) 
+    loggr.setLevel(logging.DEBUG)
+    loggrfmt = logging.Formatter('%(asctime)s:%(levelname)s:%(message)s')
+    loggrstrm = logging.StreamHandler()
+    loggrstrm.setFormatter(loggrfmt)
+    loggr.addHandler(loggrstrm)
+    loggr.debug("Starting LST...")
+
 
 class GlobalVars():
     shortname = "TkCalc"
@@ -53,24 +56,24 @@ class GlobalVars():
 class TkCalc():
     GlobalVars.display.set = 0
     def mrc(mem=None):
-        tkclogger.debug("MRC function.")
+        tkc.loggr.debug("MRC function.")
 
     def memmin(mem=None):
-        tkclogger.debug("M- function.")
+        tkc.loggr.debug("M- function.")
     
     def memplus(mem=None):
-        tkclogger.debug("M+ function.")
+        tkc.loggr.debug("M+ function.")
     
     def memce(mem=None):
-        tkclogger.debug("CE function.")
+        tkc.loggr.debug("CE function.")
         try:
             GlobalVars.calcmem = 0
-            tkclogger.info("Working memory cleared.")
+            tkc.loggr.info("Working memory cleared.")
             GlobalVars.opmem = None
-            tkclogger.info("Operator memory cleared.")
+            tkc.loggr.info("Operator memory cleared.")
             GlobalVars.display.set = GlobalVars.calcmem
         except Exception as e:
-            tkclogger.error("Error clearing memory.")
+            tkc.loggr.error("Error clearing memory.")
     
     def exitapp():
         TkCalc.root.quit()
@@ -124,7 +127,7 @@ class TkCalc():
         helpauthorlbl.grid(column= 0, row = 0, padx = 5, pady = 5, sticky="W")
 
     def docalc(value):
-        tkclogger.debug("DoCalc function.")
+        tkc.loggr.debug("DoCalc function.")
         try:
             match value:
                 case 0:
@@ -171,15 +174,15 @@ class TkCalc():
                     GlobalVars.display.set = GlobalVars.calcmem
                     
             if operation == 5:
-                tkclogger.debug(GlobalVars.calcmem)
+                tkc.loggr.debug(GlobalVars.calcmem)
                 if GlobalVars.calcmem == None:
                     GlobalVars.calcmem = 0
                     GlobalVars.calcmem = float(str(GlobalVars.calcmem) + str(value))
                 else:
                     GlobalVars.calcmem = float(str(GlobalVars.calcmem) + str(value))
         except Exception as e:
-            tkclogger.error("DoCalc failed.", e)
-        tkclogger.debug(GlobalVars.calcmem)
+            tkc.loggr.error("DoCalc failed.", e)
+        tkc.loggr.debug(GlobalVars.calcmem)
 
     button0 = partial(docalc, 0)
     button1 = partial(docalc, 1)
@@ -218,6 +221,7 @@ class TkCalc():
     helpmenu.add_command(label="About", command=openabout)
     menubar.add_cascade(label="Help", menu=helpmenu)
     root.config(menu=menubar)
+    tkc.loggr.debug("Starting LST...")
     usrentrylbl = tk.Entry(root, state="readonly", width=27, textvariable=GlobalVars.display, readonlybackground='white')
     usrentrylbl.grid(column=0, row=0, columnspan=5, padx=GlobalVars.pad, pady=GlobalVars.pad)
     mrcbtn = tk.Button(root, text="MRC", width=GlobalVars.btnsz, command=mrc)
