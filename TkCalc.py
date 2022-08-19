@@ -1,7 +1,7 @@
 """
 *********************************************************************************
 |                                                                               |
-|                             Linux System Toolbox                              |
+|                                    TkCalc                                     |
 |                 --------------------------------------------                  |   
 |                         Written by: Lothar TheQuiet                           |
 |                          lotharthequiet@gmail.com                             |
@@ -28,6 +28,13 @@ from functools import partial
 from tkinter import Tk, ttk, Canvas
 from PIL import Image, ImageTk
 
+tkclogger = logging.getLogger(__name__) 
+tkclogger.setLevel(logging.DEBUG)
+tkcloggerfmt = logging.Formatter('%(asctime)s:%(levelname)s:%(message)s')
+tkcloggerstrm = logging.StreamHandler()
+tkcloggerstrm.setFormatter(tkcloggerfmt)
+tkclogger.addHandler(tkcloggerstrm)
+tkclogger.debug("Starting LST...")
 root = tk.Tk()
 
 class GlobalVars():
@@ -44,28 +51,29 @@ class GlobalVars():
     codeassist = "Rilvyk"
     git = "https://github.com/lotharthequiet/TkCalc.git"
     display = tk.StringVar()
+    display.set = 0
 
 class TkCalc():
     GlobalVars.display.set = 0
     def mrc(mem=None):
-        print("MRC")
+        tkclogger.debug("MRC function.")
 
     def memmin(mem=None):
-        print("M-")
+        tkclogger.debug("M- function.")
     
     def memplus(mem=None):
-        print("M+")
+        tkclogger.debug("M+ function.")
     
     def memce(mem=None):
-        print("CE")
+        tkclogger.debug("CE function.")
         try:
             GlobalVars.calcmem = 0
-            print("Working memory cleared.")
+            tkclogger.info("Working memory cleared.")
             GlobalVars.opmem = None
-            print("Operator memory cleared.")
-            TkCalc.usrentrylbl['text'] = GlobalVars.calcmem
+            tkclogger.info("Operator memory cleared.")
+            GlobalVars.display.set = GlobalVars.calcmem
         except Exception as e:
-            print("Error clearing memory.")
+            tkclogger.error("Error clearing memory.")
     
     def exitapp():
         TkCalc.root.quit()
@@ -119,7 +127,7 @@ class TkCalc():
         helpauthorlbl.grid(column= 0, row = 0, padx = 5, pady = 5, sticky="W")
 
     def docalc(value):
-        print("DoCalc function.")
+        tkclogger.debug("DoCalc function.")
         try:
             match value:
                 case 0:
@@ -159,22 +167,22 @@ class TkCalc():
                 if not GlobalVars.calcmem:
                     GlobalVars.calcmem = value
                     #Self.usrentrylbl['text'] = GlobalVars.calcmem
-                    TkCalc.usrentrylbl.configure(text=GlobalVars.calcmem)
+                    GlobalVars.display.set = GlobalVars.calcmem
                 else:
                     GlobalVars.calcmem = int(str(GlobalVars.calcmem) + str(value))
                     #Self.usrentrylbl['text'] = GlobalVars.calcmem
-                    TkCalc.usrentrylbl.configure(text=GlobalVars.calcmem)
+                    GlobalVars.display.set = GlobalVars.calcmem
                     
             if operation == 5:
-                print(GlobalVars.calcmem)
+                tkclogger.debug(GlobalVars.calcmem)
                 if GlobalVars.calcmem == None:
                     GlobalVars.calcmem = 0
                     GlobalVars.calcmem = float(str(GlobalVars.calcmem) + str(value))
                 else:
                     GlobalVars.calcmem = float(str(GlobalVars.calcmem) + str(value))
         except Exception as e:
-            print("DoCalc failed.", e)
-        print(GlobalVars.calcmem)
+            tkclogger.error("DoCalc failed.", e)
+        tkclogger.debug(GlobalVars.calcmem)
 
     button0 = partial(docalc, 0)
     button1 = partial(docalc, 1)
