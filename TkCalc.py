@@ -29,7 +29,7 @@ root = tk.Tk()
 
 class GlobalVars():
     shortname = "TkCalc"
-    ver = "0.1a1" 
+    ver = "0.1a2" 
     appname = (shortname + " " + ver)
     btnsz = 2
     pad = 2
@@ -46,7 +46,7 @@ class GlobalVars():
 
 class tklog():
     loggr = logging.getLogger(__name__) 
-    loggr.setLevel(logging.DEBUG)
+    loggr.setLevel(logging.INFO)
     loggrfmt = logging.Formatter('%(asctime)s:%(levelname)s:%(message)s')
     loggrstrm = logging.StreamHandler()
     loggrstrm.setFormatter(loggrfmt)
@@ -76,7 +76,7 @@ class TkCalc():
     
     def exitapp():
         tklog.loggr.info("Exiting")
-        TkCalc.root.quit()
+        root.quit()
 
     def openabout():
         tklog.loggr.info("Opening About window.")
@@ -156,12 +156,13 @@ class TkCalc():
                     operation = 1
                     GlobalVars.opmem = "+"
                 case "-":
-                    operation = 2
+                    operation = 1
                     GlobalVars.opmem = "-"
                 case "*":
-                    operation = 3
+                    operation = 1
                     GlobalVars.opmem = "*"
                 case "div":
+                    operation = 1
                     GlobalVars.opmem = "div"
                 case ".":
                     operation = 5
@@ -175,22 +176,24 @@ class TkCalc():
                     if not GlobalVars.calcmem:
                         GlobalVars.calcmem = value
                         GlobalVars.display.set = GlobalVars.calcmem
-                        tklog.loggr.debug(GlobalVars.calcmem)
+                        tklog.loggr.info(GlobalVars.calcmem)
                         #TkCalc.usrentrylbl['text'] = GlobalVars.calcmem
                     else:
                         GlobalVars.calcmem = float(str(GlobalVars.calcmem) + str(value))
                         GlobalVars.display.set = GlobalVars.calcmem
-                        tklog.loggr.debug(GlobalVars.calcmem)
+                        tklog.loggr.info(GlobalVars.calcmem)
                         #TkCalc.usrentrylbl['text'] = "Error"
                 else:
                     if not GlobalVars.calcmem2:
                         GlobalVars.calcmem2 = value
                         GlobalVars.display.set = GlobalVars.calcmem2
-                        tklog.loggr.debug(GlobalVars.calcmem2)
+                        tklog.loggr.info(GlobalVars.opmem)
+                        tklog.loggr.info(GlobalVars.calcmem2)
                     else:
                         GlobalVars.calcmem2 = float(str(GlobalVars.calcmem2) + str(value))
                         GlobalVars.display.set = GlobalVars.calcmem2
-                        tklog.loggr.debug(GlobalVars.calcmem2)
+                        tklog.loggr.info(GlobalVars.opmem)
+                        tklog.loggr.info(GlobalVars.calcmem2)
                     
             if operation == 5:
                 tklog.loggr.debug(GlobalVars.calcmem)
@@ -202,26 +205,30 @@ class TkCalc():
 
             if operation == 6:
                 tklog.loggr.debug("Equals operation.")
+                tklog.loggr.info("=")
                 try:
                     match GlobalVars.opmem:
                         case "+":
                             GlobalVars.calcmem = GlobalVars.calcmem + GlobalVars.calcmem2
                             GlobalVars.calcmem2 = 0
-                            tklog.loggr.debug(GlobalVars.calcmem)
+                            tklog.loggr.info(GlobalVars.calcmem)
+                            
                         case "-":
                             GlobalVars.calcmem = GlobalVars.calcmem - GlobalVars.calcmem2
                             GlobalVars.calcmem2 = 0
-                            tklog.loggr.debug(GlobalVars.calcmem)
+                            tklog.loggr.info(GlobalVars.calcmem)
+                            
                         case "*":
                             GlobalVars.calcmem = GlobalVars.calcmem * GlobalVars.calcmem2
                             GlobalVars.calcmem2 = 0
-                            tklog.loggr.debug(GlobalVars.calcmem)
+                            tklog.loggr.info(GlobalVars.calcmem)
+                            
                         case "div":
                             GlobalVars.calcmem = GlobalVars.calcmem / GlobalVars.calcmem2
                             GlobalVars.calcmem2 = 0
-                            tklog.loggr.debug(GlobalVars.calcmem)
+                            tklog.loggr.info(GlobalVars.calcmem)
                 except Exception as e:
-                    tklog.loggr.error("Unable to perform operation on variables.")
+                    tklog.loggr.error("Unable to perform operation on variables.", e)
         except Exception as e:
             tklog.loggr.error("DoCalc failed.", e)
 
