@@ -18,7 +18,6 @@ ERROR: More serious prob preventing app from running
 CRITICAL: Serious error
 """
 
-from ast import Global
 import tkinter as tk
 import logging
 
