@@ -18,6 +18,7 @@ ERROR: More serious prob preventing app from running
 CRITICAL: Serious error
 """
 
+from ast import Global
 import tkinter as tk
 import logging
 
@@ -34,7 +35,8 @@ class GlobalVars():
     btnsz = 2
     pad = 2
     calcmem = 0
-    opmem = None
+    calcmem2 = 0
+    opmem = ""
     icon = "calculator.png"
     author = "Lothar TheQuiet"
     contact = "lotharthequiet@gmail.com"
@@ -43,7 +45,7 @@ class GlobalVars():
     display = tk.StringVar()
     display.set = 0
 
-class tkc():
+class tklog():
     loggr = logging.getLogger(__name__) 
     loggr.setLevel(logging.DEBUG)
     loggrfmt = logging.Formatter('%(asctime)s:%(levelname)s:%(message)s')
@@ -54,66 +56,69 @@ class tkc():
 class TkCalc():
     GlobalVars.display.set = 0
     def mrc(mem=None):
-        tkc.loggr.debug("MRC function.")
+        tklog.loggr.info("MRC function.")
 
     def memmin(mem=None):
-        tkc.loggr.debug("M- function.")
+        tklog.loggr.info("M- function.")
     
     def memplus(mem=None):
-        tkc.loggr.debug("M+ function.")
+        tklog.loggr.info("M+ function.")
     
     def memce(mem=None):
-        tkc.loggr.debug("CE function.")
+        tklog.loggr.info("CE function.")
         try:
             GlobalVars.calcmem = 0
-            tkc.loggr.info("Working memory cleared.")
-            GlobalVars.opmem = None
-            tkc.loggr.info("Operator memory cleared.")
+            tklog.loggr.info("Working memory cleared.")
+            GlobalVars.opmem = ""
+            tklog.loggr.info("Operator memory cleared.")
             GlobalVars.display.set = GlobalVars.calcmem
         except Exception as e:
-            tkc.loggr.error("Error clearing memory.")
+            tklog.loggr.error("Error clearing memory.")
     
     def exitapp():
+        tklog.loggr.info("Exiting")
         TkCalc.root.quit()
 
     def openabout():
-            aboutwindow = tk.Toplevel(root)
-            aboutwindow.title(GlobalVars.appname)
-            ico = Image.open(GlobalVars.icon)
-            photo = ImageTk.PhotoImage(ico)
-            aboutwindow.wm_iconphoto(False, photo)
-            aboutwinttlfrm = tk.LabelFrame(aboutwindow, text = "About")
-            aboutwinttlfrm.grid(column = 0, row = 0, padx = 5, pady = 5, sticky="NSEW")
-            img = Image.open(GlobalVars.icon)
-            img.resize((128, 128))
-            image = ImageTk.PhotoImage(img)
-            aboutcanvas = Canvas(aboutwinttlfrm, width=128, height=128)
-            aboutcanvas.create_image(128, 128, image = image)
-            aboutcanvas.grid(column=0, row=0, padx = 5, pady = 5, sticky="W")
-            aboutttllbl = tk.Label(aboutwinttlfrm, text=GlobalVars.appname)
-            aboutttllbl.grid(column=1, row=0, padx = 5, pady = 5, sticky="SW")
-            aboutauthorlbl = tk.Label(aboutwinttlfrm, text ="Written By:")
-            aboutauthorlbl.grid(column = 0, row = 1, padx = 5, pady = 5, sticky="W")
-            aboutauthor = tk.Label(aboutwinttlfrm, text = GlobalVars.author)
-            aboutauthor.grid(column = 1, row = 1, padx = 5, pady = 5, sticky="W")
-            aboutcontactlbl = tk.Label(aboutwinttlfrm, text ="Contact:")
-            aboutcontactlbl.grid(column = 0, row = 2, padx = 5, pady = 5, sticky="W")
-            aboutcontact = tk.Label(aboutwinttlfrm, text = GlobalVars.contact)
-            aboutcontact.grid(column = 1, row = 2, padx = 5, pady = 5, sticky="W")
-            aboutcodeasstlbl = tk.Label(aboutwinttlfrm, text ="Coding Assistance:")
-            aboutcodeasstlbl.grid(column = 0, row = 3, padx = 5, pady = 5, sticky="W")
-            aboutcodeasst = tk.Label(aboutwinttlfrm, text = GlobalVars.codeassist)
-            aboutcodeasst.grid(column = 1, row = 3, padx = 5, pady = 5, sticky="W")
-            aboutgitlbl = tk.Label(aboutwinttlfrm, text ="Git Link:")
-            aboutgitlbl.grid(column = 0, row = 4, padx = 5, pady = 5, sticky="W")
-            aboutgithubgit = tk.Label(aboutwinttlfrm, text = GlobalVars.git)
-            aboutgithubgit.grid(column = 1, row = 4, padx = 5, pady = 5, sticky="W")
-            aboutverlbl = tk.Label(aboutwinttlfrm, text = "Version:")
-            aboutverlbl.grid(column = 0, row = 5, padx = 5, pady = 5, sticky="W")
-            aboutver = tk.Label(aboutwinttlfrm, text = GlobalVars.ver)
-            aboutver.grid(column = 1, row = 5, padx = 5, pady = 5, sticky="W")
+        tklog.loggr.info("Opening About window.")
+        aboutwindow = tk.Toplevel(root)
+        aboutwindow.title(GlobalVars.appname)
+        ico = Image.open(GlobalVars.icon)
+        photo = ImageTk.PhotoImage(ico)
+        aboutwindow.wm_iconphoto(False, photo)
+        aboutwinttlfrm = tk.LabelFrame(aboutwindow, text = "About")
+        aboutwinttlfrm.grid(column = 0, row = 0, padx = 5, pady = 5, sticky="NSEW")
+        img = Image.open(GlobalVars.icon)
+        img.resize((128, 128))
+        image = ImageTk.PhotoImage(img)
+        aboutcanvas = Canvas(aboutwinttlfrm, width=128, height=128)
+        aboutcanvas.create_image(128, 128, image = image)
+        aboutcanvas.grid(column=0, row=0, padx = 5, pady = 5, sticky="W")
+        aboutttllbl = tk.Label(aboutwinttlfrm, text=GlobalVars.appname)
+        aboutttllbl.grid(column=1, row=0, padx = 5, pady = 5, sticky="SW")
+        aboutauthorlbl = tk.Label(aboutwinttlfrm, text ="Written By:")
+        aboutauthorlbl.grid(column = 0, row = 1, padx = 5, pady = 5, sticky="W")
+        aboutauthor = tk.Label(aboutwinttlfrm, text = GlobalVars.author)
+        aboutauthor.grid(column = 1, row = 1, padx = 5, pady = 5, sticky="W")
+        aboutcontactlbl = tk.Label(aboutwinttlfrm, text ="Contact:")
+        aboutcontactlbl.grid(column = 0, row = 2, padx = 5, pady = 5, sticky="W")
+        aboutcontact = tk.Label(aboutwinttlfrm, text = GlobalVars.contact)
+        aboutcontact.grid(column = 1, row = 2, padx = 5, pady = 5, sticky="W")
+        aboutcodeasstlbl = tk.Label(aboutwinttlfrm, text ="Coding Assistance:")
+        aboutcodeasstlbl.grid(column = 0, row = 3, padx = 5, pady = 5, sticky="W")
+        aboutcodeasst = tk.Label(aboutwinttlfrm, text = GlobalVars.codeassist)
+        aboutcodeasst.grid(column = 1, row = 3, padx = 5, pady = 5, sticky="W")
+        aboutgitlbl = tk.Label(aboutwinttlfrm, text ="Git Link:")
+        aboutgitlbl.grid(column = 0, row = 4, padx = 5, pady = 5, sticky="W")
+        aboutgithubgit = tk.Label(aboutwinttlfrm, text = GlobalVars.git)
+        aboutgithubgit.grid(column = 1, row = 4, padx = 5, pady = 5, sticky="W")
+        aboutverlbl = tk.Label(aboutwinttlfrm, text = "Version:")
+        aboutverlbl.grid(column = 0, row = 5, padx = 5, pady = 5, sticky="W")
+        aboutver = tk.Label(aboutwinttlfrm, text = GlobalVars.ver)
+        aboutver.grid(column = 1, row = 5, padx = 5, pady = 5, sticky="W")
 
     def openhelp():
+        tklog.loggr.info("Opening Help window.")
         helpwindow = tk.Toplevel(root)
         helpwindow.title(GlobalVars.appname)
         ico = Image.open(GlobalVars.icon)
@@ -125,7 +130,7 @@ class TkCalc():
         helpauthorlbl.grid(column= 0, row = 0, padx = 5, pady = 5, sticky="W")
 
     def docalc(value):
-        tkc.loggr.debug("DoCalc function.")
+        tklog.loggr.debug("DoCalc function.")
         try:
             match value:
                 case 0:
@@ -150,37 +155,76 @@ class TkCalc():
                     operation = 0
                 case "+":
                     operation = 1
+                    GlobalVars.opmem = "+"
                 case "-":
                     operation = 2
-                case "x":
+                    GlobalVars.opmem = "-"
+                case "*":
                     operation = 3
-                case "/":
-                    operation = 4
+                    GlobalVars.opmem = "*"
+                case "div":
+                    GlobalVars.opmem = "div"
                 case ".":
                     operation = 5
                 case "=":
                     operation = 6
 
             if operation == 0:
-                if not GlobalVars.calcmem:
-                    GlobalVars.calcmem = value
-                    #Self.usrentrylbl['text'] = GlobalVars.calcmem
-                    GlobalVars.display.set = GlobalVars.calcmem
+                tklog.loggr.debug("Char concat. operation.")
+                if not GlobalVars.opmem:
+                    tklog.loggr.debug(GlobalVars.opmem)
+                    if not GlobalVars.calcmem:
+                        GlobalVars.calcmem = value
+                        GlobalVars.display.set = GlobalVars.calcmem
+                        tklog.loggr.debug(GlobalVars.calcmem)
+                        #TkCalc.usrentrylbl['text'] = GlobalVars.calcmem
+                    else:
+                        GlobalVars.calcmem = float(str(GlobalVars.calcmem) + str(value))
+                        GlobalVars.display.set = GlobalVars.calcmem
+                        tklog.loggr.debug(GlobalVars.calcmem)
+                        #TkCalc.usrentrylbl['text'] = "Error"
                 else:
-                    GlobalVars.calcmem = int(str(GlobalVars.calcmem) + str(value))
-                    #Self.usrentrylbl['text'] = GlobalVars.calcmem
-                    GlobalVars.display.set = GlobalVars.calcmem
+                    if not GlobalVars.calcmem2:
+                        GlobalVars.calcmem2 = value
+                        GlobalVars.display.set = GlobalVars.calcmem2
+                        tklog.loggr.debug(GlobalVars.calcmem2)
+                    else:
+                        GlobalVars.calcmem2 = float(str(GlobalVars.calcmem2) + str(value))
+                        GlobalVars.display.set = GlobalVars.calcmem2
+                        tklog.loggr.debug(GlobalVars.calcmem2)
                     
             if operation == 5:
-                tkc.loggr.debug(GlobalVars.calcmem)
-                if GlobalVars.calcmem == None:
+                tklog.loggr.debug(GlobalVars.calcmem)
+                if GlobalVars.calcmem == 0:
                     GlobalVars.calcmem = 0
                     GlobalVars.calcmem = float(str(GlobalVars.calcmem) + str(value))
                 else:
                     GlobalVars.calcmem = float(str(GlobalVars.calcmem) + str(value))
+
+            if operation == 6:
+                tklog.loggr.debug("Equals operation.")
+                try:
+                    match GlobalVars.opmem:
+                        case "+":
+                            GlobalVars.calcmem = GlobalVars.calcmem + GlobalVars.calcmem2
+                            GlobalVars.calcmem2 = 0
+                            tklog.loggr.debug(GlobalVars.calcmem)
+                        case "-":
+                            GlobalVars.calcmem = GlobalVars.calcmem - GlobalVars.calcmem2
+                            GlobalVars.calcmem2 = 0
+                            tklog.loggr.debug(GlobalVars.calcmem)
+                        case "*":
+                            GlobalVars.calcmem = GlobalVars.calcmem * GlobalVars.calcmem2
+                            GlobalVars.calcmem2 = 0
+                            tklog.loggr.debug(GlobalVars.calcmem)
+                        case "div":
+                            GlobalVars.calcmem = GlobalVars.calcmem / GlobalVars.calcmem2
+                            GlobalVars.calcmem2 = 0
+                            tklog.loggr.debug(GlobalVars.calcmem)
+                except Exception as e:
+                    tklog.loggr.error("Unable to perform operation on variables.")
         except Exception as e:
-            tkc.loggr.error("DoCalc failed.", e)
-        tkc.loggr.debug(GlobalVars.calcmem)
+            tklog.loggr.error("DoCalc failed.", e)
 
     button0 = partial(docalc, 0)
     button1 = partial(docalc, 1)
@@ -195,7 +239,7 @@ class TkCalc():
     buttonplus = partial(docalc, "+")
     buttonminus = partial(docalc, "-")
     buttonmult = partial(docalc, "*")
-    buttondiv = partial(docalc, "/")
+    buttondiv = partial(docalc, "div")
     buttonper = partial(docalc, "%")
     buttonsqrt = partial(docalc, "sqrt")
     buttonplusmin = partial(docalc, "+/-")
@@ -219,7 +263,7 @@ class TkCalc():
     helpmenu.add_command(label="About", command=openabout)
     menubar.add_cascade(label="Help", menu=helpmenu)
     root.config(menu=menubar)
-    tkc.loggr.debug("Starting LST...")
+    tklog.loggr.debug("Starting LST...")
     usrentrylbl = tk.Entry(root, state="readonly", width=27, textvariable=GlobalVars.display, readonlybackground='white')
     usrentrylbl.grid(column=0, row=0, columnspan=5, padx=GlobalVars.pad, pady=GlobalVars.pad)
     mrcbtn = tk.Button(root, text="MRC", width=GlobalVars.btnsz, command=mrc)
