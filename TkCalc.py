@@ -18,6 +18,7 @@ ERROR: More serious prob preventing app from running
 CRITICAL: Serious error
 """
 
+from ctypes import alignment
 import tkinter as tk
 import logging
 
@@ -41,8 +42,7 @@ class GlobalVars():
     contact = "lotharthequiet@gmail.com"
     codeassist = "Rilvyk"
     git = "https://github.com/lotharthequiet/TkCalc.git"
-    display = tk.StringVar()
-    display.set = 0
+    display = tk.StringVar(root, value=0)
 
 class tklog():
     loggr = logging.getLogger(__name__) 
@@ -175,33 +175,40 @@ class TkCalc():
                     tklog.loggr.debug(GlobalVars.opmem)
                     if not GlobalVars.calcmem:
                         GlobalVars.calcmem = value
-                        GlobalVars.display.set = GlobalVars.calcmem
+                        GlobalVars.display.set = str(GlobalVars.calcmem)
+                        #GlobalVars.display = str(GlobalVars.calcmem)
                         tklog.loggr.info(GlobalVars.calcmem)
                         #TkCalc.usrentrylbl['text'] = GlobalVars.calcmem
-                    else:
+                    elif GlobalVars.calcmem == 0:
                         GlobalVars.calcmem = float(str(GlobalVars.calcmem) + str(value))
-                        GlobalVars.display.set = GlobalVars.calcmem
+                        #GlobalVars.display = str(GlobalVars.calcmem)
+                        GlobalVars.display.set = str(GlobalVars.calcmem)
+                        tklog.loggr.info(GlobalVars.calcmem)
+                        #TkCalc.usrentrylbl['text'] = "Error"
+                    else:
+                        GlobalVars.calcmem = str(GlobalVars.calcmem) + str(value)
+                        #GlobalVars.display = str(GlobalVars.calcmem)
+                        GlobalVars.display.set = str(GlobalVars.calcmem)
                         tklog.loggr.info(GlobalVars.calcmem)
                         #TkCalc.usrentrylbl['text'] = "Error"
                 else:
                     if not GlobalVars.calcmem2:
                         GlobalVars.calcmem2 = value
-                        GlobalVars.display.set = GlobalVars.calcmem2
+                        #GlobalVars.display.set = GlobalVars.calcmem2
                         tklog.loggr.info(GlobalVars.opmem)
                         tklog.loggr.info(GlobalVars.calcmem2)
                     else:
                         GlobalVars.calcmem2 = float(str(GlobalVars.calcmem2) + str(value))
-                        GlobalVars.display.set = GlobalVars.calcmem2
+                        #GlobalVars.display.set = GlobalVars.calcmem2
                         tklog.loggr.info(GlobalVars.opmem)
                         tklog.loggr.info(GlobalVars.calcmem2)
                     
             if operation == 5:
                 tklog.loggr.debug(GlobalVars.calcmem)
                 if GlobalVars.calcmem == 0:
-                    GlobalVars.calcmem = 0
-                    GlobalVars.calcmem = float(str(GlobalVars.calcmem) + str(value))
+                    GlobalVars.calcmem = float(str("." + str(GlobalVars.calcmem) + str(value)))
                 else:
-                    GlobalVars.calcmem = float(str(GlobalVars.calcmem) + str(value))
+                    GlobalVars.calcmem = float(str("." + str(GlobalVars.calcmem) + str(value)))
 
             if operation == 6:
                 tklog.loggr.debug("Equals operation.")
@@ -270,7 +277,7 @@ class TkCalc():
     menubar.add_cascade(label="Help", menu=helpmenu)
     root.config(menu=menubar)
     tklog.loggr.debug("Starting LST...")
-    usrentrylbl = tk.Entry(root, state="readonly", width=27, textvariable=GlobalVars.display, readonlybackground='white')
+    usrentrylbl = tk.Entry(root, state="readonly", width=27, textvariable=GlobalVars.display, readonlybackground='white', justify='right')
     usrentrylbl.grid(column=0, row=0, columnspan=5, padx=GlobalVars.pad, pady=GlobalVars.pad)
     mrcbtn = tk.Button(root, text="MRC", width=GlobalVars.btnsz, command=mrc)
     mrcbtn.grid(column=0, row=1, padx=GlobalVars.pad, pady=GlobalVars.pad)
